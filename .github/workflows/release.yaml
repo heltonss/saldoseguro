@@ -9,11 +9,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Listar artefatos disponíveis
+        run: |
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/actions/artifacts
       - name: Baixar artifact da pasta dist
         uses: actions/download-artifact@v4
         with:
           name: distribution
-          path: .
+          github-token: ${{ secrets.TOKEN_SALDO_SEGURO }}
+          run-id: ${{ github.event.workflow_run.id }}
+      - name: Display structure of downloaded files
+        run: ls -R
       - name: Listar arquivos para confirmar
         run: ls -l 
       - name: Upload to dist folder
