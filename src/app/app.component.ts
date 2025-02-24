@@ -8,6 +8,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'saldoseguro + projeto impacta + angular';
-  teste = 'teste';
+  title = 'saldoseguro + projeto impacta devops + angular';
 }

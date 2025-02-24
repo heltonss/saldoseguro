@@ -22,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: distribution
-          path: ./dist
+          path: dist/
           retention-days: 1
       - name: Checkout repository for PR
         uses: actions/checkout@v4
