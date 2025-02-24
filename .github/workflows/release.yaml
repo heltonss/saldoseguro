@@ -1,0 +1,33 @@
+name: Deploy Workflow
+run-name: ${{ github.actor}} - ${{ github.run_number }} execute publish
+on:
+  workflow_run:
+    workflows: ["Build Workflow"]
+    types:
+      - completed
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Listar artefatos disponíveis
+        run: |
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/actions/artifacts
+      - name: Baixar artifact da pasta dist
+        uses: actions/download-artifact@v4
+        with:
+          name: distribution
+          github-token: ${{ secrets.TOKEN_SALDO_SEGURO }}
+          run-id: ${{ github.event.workflow_run.id }}
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Listar arquivos para confirmar
+        run: ls -l 
+      - name: Upload to dist folder
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.FOLDER_PUBLISH }}

@@ -50,7 +50,8 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/saldoseguro/browser/"
             },
             "development": {
               "optimization": false,
@@ -98,5 +99,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "adc5f108-0b36-42f5-9789-8288abe282ca"
   }
 }
