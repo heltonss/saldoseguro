@@ -17,13 +17,21 @@ describe('AppComponent', () => {
   it(`should have the 'saldoseguro' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+<<<<<<< HEAD
     expect(app.title).toEqual('saldoseguro + projeto impacta devops + angular');
+=======
+    expect(app.title).toEqual('saldoseguro + projeto impacta + angular');
+>>>>>>> ba2dd02 (chore(workflow): adiciona workflow para publicacao)
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
+<<<<<<< HEAD
     expect(compiled.querySelector('h1')?.textContent).toContain('Hello, saldoseguro + projeto impacta devops + angular');
+=======
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, saldoseguro + projeto impacta + angular');
+>>>>>>> ba2dd02 (chore(workflow): adiciona workflow para publicacao)
   });
 });

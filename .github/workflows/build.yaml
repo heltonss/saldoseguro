@@ -17,7 +17,11 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build Angular project
+<<<<<<< HEAD
         run: npm run build
+=======
+        run: npm run build --prod
+>>>>>>> ba2dd02 (chore(workflow): adiciona workflow para publicacao)
       - name: Upload da pasta dist como artifact
         uses: actions/upload-artifact@v4
         with:
