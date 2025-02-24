@@ -1,0 +1,43 @@
+name: test
+run-name: ${{ github.actor}}-${{ github.run_number }} execute test
+on:
+  push:
+    branches:
+      - "feature/*"
+      - "fix/*"
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+  create-pull-request:
+    runs-on: ubuntu-latest
+    needs: unit-test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: create pull request
+        run: |
+          if ! gh pr view ${{ github.ref_name }}; then
+            gh pr create -B main -H ${{ github.ref_name }} --title 'Merge ${{ github.event.head_commit.message }} into main' --body 'Created by ${{ github.actor }}'
+          else
+            echo "Pull request already exists"
+          fi
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
