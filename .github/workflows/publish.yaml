@@ -1,11 +1,7 @@
-# This is a basic workflow to help you get started with Vue s3 deployer action
-
 name: Deployment
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
