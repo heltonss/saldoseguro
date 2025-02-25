@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - "*"
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   unit-test:
     runs-on: ubuntu-latest
@@ -17,10 +20,10 @@ jobs:
         with:
           node-version: "18"
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies package-lock.json
+        run: npm ci
       - name: Run tests
-        run: npm test
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
@@ -28,12 +31,14 @@ jobs:
   create_pull_request:
     needs: unit-test
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           title: "Deploy updates"
-          body: "This PR contains the latest deployment updates."
+          body: "This PR contains the latest deployment update."
           base: "main"
