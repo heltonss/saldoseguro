@@ -1,4 +1,4 @@
-name: test
+name: Test Workflow
 run-name: ${{ github.actor}}-${{ github.run_number }} execute test
 on:
   push:
