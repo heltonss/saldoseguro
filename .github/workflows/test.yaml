@@ -35,7 +35,7 @@ jobs:
       - name: create pull request
         run: |
           if ! gh pr view ${{ github.ref_name }}; then
-            gh pr create -B develop -H ${{ github.ref_name }} --title 'Merge ${{ github.event.head_commit.message }} into main' --body 'Created by ${{ github.actor }}'
+            gh pr create -B develop -H ${{ github.ref_name }} --title 'Merge ${{ github.event.head_commit.message }} into develop' --body 'Created by ${{ github.actor }}'
           else
             echo "Pull request already exists"
           fi

@@ -1,13 +1,38 @@
 name: Build Workflow
-
+run-name: ${{ github.actor}} - ${{ github.run_number }} execute build
 on:
-  workflow_run:
-    workflows: ["Test Workflow"]  
-    types:
-      - completed
-
+  push:
+    branches:
+      - 'develop'
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Running build after build"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+      - name: Build Angular project
+        run: npm run build
+      - name: Upload da pasta dist como artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: dist
+          retention-days: 1
+      - name: Checkout repository for PR
+        uses: actions/checkout@v4
+      - name: Create pull request for main branch
+        run: |
+          if ! gh pr view ${{ github.ref_name }}; then
+            gh pr create -B main -H ${{ github.ref_name }} --title 'Merge ${{ github.event.head_commit.message }} into main' --body 'Created by ${{ github.actor }}'
+          else
+            echo "Pull request already exists"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
