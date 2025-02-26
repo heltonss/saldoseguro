@@ -1,0 +1,27 @@
+name: Deploy Workflow
+run-name: ${{ github.actor}} - ${{ github.run_number }} execute publish
+on:
+  workflow_run:
+    workflows: ["Build Workflow"]
+    types:
+      - completed
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar artifact da pasta dist
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+          path: dist
+      - name: Listar arquivos para confirmar
+        run: ls -l dist
+      - name: Upload para S3
+        uses: aws-actions/s3-sync-action@v1
+        with:
+          bucket: meu-bucket-s3
+          region: us-east-1
+          args: --acl public-read
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
