@@ -1,0 +1,13 @@
+name: Build Workflow
+
+on:
+  workflow_run:
+    workflows: ["Test Workflow"]  
+    types:
+      - completed
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running build after build"
