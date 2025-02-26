@@ -19,7 +19,7 @@ jobs:
       - name: Build Angular project
         run: npm run build
       - name: Upload da pasta dist como artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist-files
           path: dist
