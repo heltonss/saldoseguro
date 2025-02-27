@@ -15,7 +15,7 @@ jobs:
           name: distribution
           path: .
       - name: Listar arquivos para confirmar
-        run: ls -l dist
+        run: ls -l 
       - name: Upload to dist folder
         uses: jakejarvis/s3-sync-action@master
         with:
