@@ -21,7 +21,7 @@ jobs:
       - name: Upload da pasta dist como artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dist-files
+          name: distribution
           path: dist
           retention-days: 1
       - name: Checkout repository for PR
