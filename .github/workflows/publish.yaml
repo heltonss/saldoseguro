@@ -10,18 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Baixar artifact da pasta dist
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist-files
           path: dist
       - name: Listar arquivos para confirmar
         run: ls -l dist
-      - name: Upload para S3
-        uses: aws-actions/s3-sync-action@v1
+      - name: Upload to dist folder
+        uses: jakejarvis/s3-sync-action@master
         with:
-          bucket: meu-bucket-s3
-          region: us-east-1
-          args: --acl public-read
+          args: --acl public-read --follow-symlinks --delete
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.FOLDER_PUBLISH }}
